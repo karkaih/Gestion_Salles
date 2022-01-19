@@ -15,14 +15,17 @@ import java.util.List;
 public class ReservationService implements IDao<reservation> {
     @Override
     public boolean create(reservation o) {
-        String sql = "insert into reservation values (null, ?, ?, ?, ?, ?)";
+        String sql = "insert into reservation values (null, ?, ?, ?, ?, ?,?)";
         try {
             PreparedStatement ps = Connexion.PreparedSQLStatement(sql);
             ps.setString(1, o.getNote());
             ps.setString(2, o.getType());
-            ps.setObject(3, o.getSalle());
+            ps.setString(3, o.getSalle());
             ps.setInt(4, o.getClient());
-            ps.setObject(5, o.getCreneaux());
+            ps.setString(3, o.getStartDate());
+            ps.setString(3, o.getEndDate());
+          
+           
             if (ps.executeUpdate() == 1) {
                 return true;
             }
@@ -89,7 +92,7 @@ public class ReservationService implements IDao<reservation> {
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
                 return new reservation(rs.getInt("id"), rs.getString("note"),rs.getString("type"),
-                        rs.getInt("salle"),rs.getInt("client"),rs.getInt("creneaux"));
+                        rs.getString("salle"),rs.getInt("client"),rs.getString("startDate"),rs.getString("endDate"));
             }
 
         } catch (SQLException e) {
@@ -106,8 +109,8 @@ public class ReservationService implements IDao<reservation> {
             ps.setInt(1, id);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
-                reservationList.add(new reservation(rs.getInt("id"), rs.getString("note"),rs.getString("type"),
-                        rs.getInt("salle"),rs.getInt("client"),rs.getInt("creneaux")));
+                reservationList.add( new reservation(rs.getInt("id"), rs.getString("note"),rs.getString("type"),
+                        rs.getString("salle"),rs.getInt("client"),rs.getString("startDate"),rs.getString("endDate")));
             }
         } catch (SQLException e) {
             System.out.println("findById " + e.getMessage());
@@ -124,8 +127,8 @@ public class ReservationService implements IDao<reservation> {
             PreparedStatement ps = Connexion.PreparedSQLStatement(sql);;
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
-                reservationList.add(new reservation(rs.getInt("id"), rs.getString("note"),rs.getString("type"),
-                        rs.getInt("salle"),rs.getInt("client"),rs.getInt("creneaux")));
+                reservationList.add( new reservation(rs.getInt("id"), rs.getString("note"),rs.getString("type"),
+                        rs.getString("salle"),rs.getInt("client"),rs.getString("startDate"),rs.getString("endDate")));
             }
 
         } catch (SQLException e) {

@@ -50,10 +50,11 @@ public class ReservationController extends HttpServlet {
             } else if (request.getParameter("op").equals("add")) {
                 String note = request.getParameter("note");
                 String type = request.getParameter("type");
-                double startDate = Double.parseDouble(request.getParameter("startDate"));
-                double endDate = Double.parseDouble(request.getParameter("endDate"));
-                int clientid = reservationService.createCreneaux(new creneaux(startDate,endDate));
-                reservationService.create(new reservation(note,type, UserController.currentUser.getId(), clientid));
+                String salle = request.getParameter("salle");
+                String startDate =request.getParameter("startDate");
+                String endDate = request.getParameter("endDate");
+                
+                reservationService.create(new reservation(note,type,salle, UserController.currentUser.getId(), startDate,endDate));
                 response.setContentType("application/json");
                 List<reservation> userList = reservationService.findAll();
                 Gson json = new Gson();

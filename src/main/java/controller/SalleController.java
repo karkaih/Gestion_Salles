@@ -1,6 +1,8 @@
 package controller;
 
 import beans.salle;
+import beans.user;
+
 import com.google.gson.Gson;
 import service.salleServices;
 
@@ -12,6 +14,7 @@ import java.util.List;
 
 @WebServlet(name = "SalleController", value = "/SalleController")
 public class SalleController extends HttpServlet {
+	
     salleServices salleServices = new salleServices();
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -24,7 +27,7 @@ public class SalleController extends HttpServlet {
     }
     private void processRequest(HttpServletRequest request, HttpServletResponse response)  throws ServletException, IOException {
         if (request.getParameter("op") != null) {
-             if (request.getParameter("op").equals("delete")) {
+        	if (request.getParameter("op").equals("delete")) {
                 int id = Integer.parseInt(request.getParameter("id"));
                 salleServices.delete(salleServices.findById(id).getId());
                 response.setContentType("application/json");
@@ -46,12 +49,16 @@ public class SalleController extends HttpServlet {
                  List<salle> userList = salleServices.findAll();
                  Gson json = new Gson();
                  response.getWriter().write(json.toJson(userList));
+                 
              }else if (request.getParameter("op").equals("update")) {
+            	 
                 int id = Integer.parseInt(request.getParameter("id"));
                 String name = request.getParameter("name");
                 String capacity = request.getParameter("capacity");
                 String type = request.getParameter("type");
+                
                 salle m = salleServices.findById(id);
+                
                 m.setName(name);
                 m.setCapacity(capacity);
                 m.setType(type);

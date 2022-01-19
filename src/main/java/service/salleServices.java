@@ -16,12 +16,13 @@ public class salleServices implements IDao<salle> {
 
     @Override
     public boolean create(salle o) {
-        String sql = "insert into salle values (null, ?, ?, ?)";
+        String sql = "insert into salle values (null, ?, ?, ?,?)";
         try {
             PreparedStatement ps = Connexion.PreparedSQLStatement(sql);
             ps.setString(1, o.getName());
             ps.setString(2, o.getCapacity());
             ps.setString(3, o.getType());
+            ps.setInt(4, o.getnReservation());
             if (ps.executeUpdate() == 1) {
                 return true;
             }

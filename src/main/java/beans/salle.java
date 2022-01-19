@@ -9,7 +9,9 @@ public class salle {
     private String type ;
     private int nReservation;
 
-    public salle(int id, String name, String capacity, String type) {
+   
+
+	public salle(int id, String name, String capacity, String type) {
         this.id = id;
         this.name = name;
         this.capacity = capacity;

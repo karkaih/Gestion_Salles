@@ -29,19 +29,24 @@
                             Simple Datatable
                         </div>
                         <div class="card-body">
-                            <table class="table table-striped" id="UserTable">
+                            <table class="table table-striped" >
                                 <thead>
+                               
                                     <tr>
                                         <th>Id</th>
                                         <th>FullName</th>
                                         <th>Username</th>
                                         <th>Password</th>
-                                         <th>Email</th>
-                                          <th>City</th>
+                                        <th>Email</th>
+                                        <th>City</th>
                                         <th>State</th>
-                                         <th>Level</th>
+                                        <th>Level</th>
+                                        <th>Operations</th>
                                     </tr>
                                 </thead>
+                                <tbody id="UserTable">
+                                
+                                </tbody>
                             </table>
                         </div>
                     </div>
@@ -50,18 +55,4 @@
             </div>
         </div>
         
-        <!-- <script type="text/javascript">
-$.ajax({
-    url: 'http://localhost:8081/Reserv_salles/UserController',
-    dataType: 'json',
-    success: function(data) {
-        for (var i=0; i<data.length; i++) {
-            var row = $('<tr><td>' + data[i].id+ '</td><td>' + data[i].fullname + '</td><td>' + data[i].username + '</td><td>'+ data[i].password + '</td><td>'+ data[i].email + '</td><td>'+ data[i].city + '</td><td>'+ data[i].state + '</td><td>'+ data[i].level + '</td></tr>');
-            $('#UserTable').append(row);
-        }
-    },
-    error: function(jqXHR, textStatus, errorThrown){
-        alert('Error: ' + textStatus + ' - ' + errorThrown);
-    }
-});
-</script> -->
+   

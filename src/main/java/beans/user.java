@@ -17,12 +17,11 @@ public class user {
     private String state ;
     private String level ;
 
-    public user(int id, String fullName, String username, String password, Date birthdate, String email, String city, String state,String level) {
+    public user(int id, String fullName, String username, String password, String email, String city, String state,String level) {
         this.id = id;
         this.fullName = fullName;
         this.username = username;
         this.password = password;
-        this.birthdate = birthdate;
         this.email = email;
         this.city = city;
         this.state = state;
@@ -34,17 +33,21 @@ public class user {
         this.username = username;
     }
 
-    public user(String fullName, String username, String password, Date birthdate, String email, String city, String state) {
-        this.fullName = fullName;
-        this.username = username;
-        this.password = password;
-        this.birthdate = birthdate;
-        this.email = email;
-        this.city = city;
-        this.state = state;
-    }
+   
 
-    public user(String fullName, String username, Date birthdate) {
+    public user(String fullName, String username, String password, String email, String city, String state,
+			String level) {
+		super();
+		this.fullName = fullName;
+		this.username = username;
+		this.password = password;
+		this.email = email;
+		this.city = city;
+		this.state = state;
+		this.level = level;
+	}
+
+	public user(String fullName, String username, Date birthdate) {
         this.fullName = fullName;
         this.username = username;
         this.birthdate = birthdate;
