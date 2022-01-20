@@ -90,17 +90,17 @@ public class salleServices implements IDao<salle> {
 
     public salle findByNumberReservation() {
         try {
-            PreparedStatement pr = Connexion.PreparedSQLStatement("select MAX(nReservation) as N ,id, name , capacity , type from salle ");
+            PreparedStatement pr = Connexion.PreparedSQLStatement("select MAX(nReservation) as N ,id, name , capacity, nReservation ,type from salle ");
             assert pr != null;
             ResultSet resultSet = pr.executeQuery();
             if (resultSet.next())
-                return new salle(resultSet.getInt("id"),resultSet.getString("name"),resultSet.getString("capacity"),resultSet.getString("type"),resultSet.getInt("N"));
+                return new salle(resultSet.getInt("id"),resultSet.getString("name"),resultSet.getString("capacity"),resultSet.getString("type"),resultSet.getInt("nReservation"));
         }catch (SQLException e) {
             e.printStackTrace();
         }
         return null;
     }
-
+    
     @Override
     public List<salle> findAll() {
         List<salle> salles = new ArrayList<salle>();
@@ -120,5 +120,22 @@ public class salleServices implements IDao<salle> {
         return salles;
     }
 
+    public salle findByName(String name) {
+        salle m = null;
+        String sql = "select * from salle where name like '"+name+"'";
+        try {
+            PreparedStatement ps = Connexion.PreparedSQLStatement(sql);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                return new salle(rs.getInt("id"), rs.getString("name"),
+                        rs.getString("capacity"),rs.getString("type"),rs.getInt("nReservation"));
+            }
 
+        } catch (SQLException e) {
+            System.out.println("findById " + e.getMessage());
+        }
+        return null;
+    }
+
+    
 }

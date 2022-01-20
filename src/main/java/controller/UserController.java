@@ -36,7 +36,7 @@ public class UserController extends HttpServlet {
    
     	
     
-        if (request.getParameter("op") != null) {
+        if (request.getParameter("op") != null  ) {
         	
         	
             if (request.getParameter("op").equals("createAccount")) {
@@ -148,7 +148,7 @@ public class UserController extends HttpServlet {
                         session = request.getSession();
                         session.setAttribute("login", u);
                         
-                        response.getWriter().write(json.toJson(true));
+                        response.getWriter().write(json.toJson(u));
                     }
                 }
                    
@@ -160,5 +160,6 @@ public class UserController extends HttpServlet {
             Gson json = new Gson();
             response.getWriter().write(json.toJson(userList));
         }
+        
     }
 }

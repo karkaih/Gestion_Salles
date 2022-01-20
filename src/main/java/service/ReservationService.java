@@ -1,11 +1,13 @@
 package service;
 
+import beans.CalendarDTO;
 import beans.creneaux;
 import beans.reservation;
 import beans.salle;
 import connexion.Connexion;
 import dao.IDao;
 
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -22,8 +24,8 @@ public class ReservationService implements IDao<reservation> {
             ps.setString(2, o.getType());
             ps.setString(3, o.getSalle());
             ps.setInt(4, o.getClient());
-            ps.setString(3, o.getStartDate());
-            ps.setString(3, o.getEndDate());
+            ps.setDate(5, new Date(o.getStartDate().getTime()));
+            ps.setDate(6, new Date(o.getEndDate().getTime()));
           
            
             if (ps.executeUpdate() == 1) {
@@ -72,7 +74,7 @@ public class ReservationService implements IDao<reservation> {
         String sql = "update reservation set salle  = ?  where id  = ?";
         try {
             PreparedStatement ps = Connexion.PreparedSQLStatement(sql);
-            ps.setObject(1, o.getSalle());
+            ps.setString(1, o.getSalle());
             ps.setInt(2, o.getId());
             if (ps.executeUpdate() == 1) {
                 return true;
@@ -85,14 +87,14 @@ public class ReservationService implements IDao<reservation> {
 
     @Override
     public reservation findById(int id) {
-        String sql = "select * from reservation where client  = ?";
+        String sql = "select * from reservation where id  = ?";
         try {
             PreparedStatement ps = Connexion.PreparedSQLStatement(sql);
             ps.setInt(1, id);
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
                 return new reservation(rs.getInt("id"), rs.getString("note"),rs.getString("type"),
-                        rs.getString("salle"),rs.getInt("client"),rs.getString("startDate"),rs.getString("endDate"));
+                        rs.getString("salle"),rs.getInt("client"),rs.getDate("startDate"),rs.getDate("endDate"));
             }
 
         } catch (SQLException e) {
@@ -110,7 +112,7 @@ public class ReservationService implements IDao<reservation> {
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 reservationList.add( new reservation(rs.getInt("id"), rs.getString("note"),rs.getString("type"),
-                        rs.getString("salle"),rs.getInt("client"),rs.getString("startDate"),rs.getString("endDate")));
+                        rs.getString("salle"),rs.getInt("client"),rs.getDate("startDate"),rs.getDate("endDate")));
             }
         } catch (SQLException e) {
             System.out.println("findById " + e.getMessage());
@@ -128,7 +130,7 @@ public class ReservationService implements IDao<reservation> {
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 reservationList.add( new reservation(rs.getInt("id"), rs.getString("note"),rs.getString("type"),
-                        rs.getString("salle"),rs.getInt("client"),rs.getString("startDate"),rs.getString("endDate")));
+                        rs.getString("salle"),rs.getInt("client"),rs.getDate("startDate"),rs.getDate("endDate")));
             }
 
         } catch (SQLException e) {
@@ -136,5 +138,79 @@ public class ReservationService implements IDao<reservation> {
         }
         return reservationList;
     }
+    
+    
+    
+    
+    public List<salle> findAvailable() {
+        List<salle> salles = new ArrayList<salle>();
+
+        String sql = "select * from salle  where name not in (select salle from reservation) ";
+        try {
+        	
+            PreparedStatement ps = Connexion.PreparedSQLStatement(sql);;
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                salles.add(new salle(rs.getInt("id"), rs.getString("name"),
+                        rs.getString("capacity"),rs.getString("type"),rs.getInt("nReservation")));
+            }
+
+        } 
+        catch (SQLException e) {
+            System.out.println("findAll " + e.getMessage());
+        }
+        
+        return salles;
+        
+    }
+    
+    public List<CalendarDTO> findBookingNByMonth() {
+        List<CalendarDTO> calendarDTOArrayList = new ArrayList<CalendarDTO>();
+
+        String sql = "select  count(*) as x,EXTRACT(MONTH FROM startDate) as y from reservation\n" +
+                "group by EXTRACT(MONTH FROM startDate)";
+        try {
+            PreparedStatement ps = Connexion.PreparedSQLStatement(sql);;
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                calendarDTOArrayList.add(new CalendarDTO(rs.getInt("x"),getMountName(rs.getInt("y"))));
+            }
+            
+
+        } catch (SQLException e) {
+            System.out.println("findAll " + e.getMessage());
+        }
+        return calendarDTOArrayList;
+    }
+    
+    
+    public String getMountName(int i){
+        if(i==1)
+            return "Jan";
+        else if(i==2)
+            return "Feb";
+        else if(i==3)
+            return "Mar";
+        else if(i==4)
+            return "Apr";
+        else if(i==5)
+            return "May";
+        else if(i==6)
+            return "Jun";
+        else if(i==7)
+            return "Jul";
+        else if(i==8)
+            return "Aug";
+        else if(i==9)
+            return "Sep";
+        else if(i==10)
+            return "Oct";
+        else if(i==11)
+            return "No";
+        else
+            return "Dec";
+    }
+    
 }
+
 

@@ -25,7 +25,7 @@ public class userService implements IDao<user> {
             assert pr != null;
             pr.setString(1,o.getUsername());
             pr.setString(2,(o.getPassword()));
-            pr.setString(3,"simpleUser");
+            pr.setString(3,o.getLevel());
             pr.setString(4,o.getFullName());
             pr.setString(5,o.getEmail());
             pr.setString(6,o.getCity());

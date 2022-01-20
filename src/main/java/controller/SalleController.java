@@ -4,6 +4,8 @@ import beans.salle;
 import beans.user;
 
 import com.google.gson.Gson;
+
+import service.ReservationService;
 import service.salleServices;
 
 import javax.servlet.*;
@@ -84,13 +86,36 @@ public class SalleController extends HttpServlet {
                 Gson json = new Gson();
                 response.getWriter().write(json.toJson(m));
 
+            }else if (request.getParameter("op").equals("getMostBooked")) {
+                salle m = salleServices.findByNumberReservation();
+                response.setContentType("application/json");
+                Gson json = new Gson();
+                response.getWriter().write(json.toJson(m));
+
+            }else if (request.getParameter("op").equals("FindAvailable")) {
+            	
+            	ReservationService rs = new  ReservationService();
+            	 response.setContentType("application/json");
+                 List<salle> userList = rs.findAvailable();
+                 for(salle user : userList) {
+                	 System.out.println(user.getId());
+                		
+                 }
+                 Gson json = new Gson();
+                 response.getWriter().write(json.toJson(userList));
+
             }
-        }else  {
+        	
+        }
+        else  {
+        	
             response.setContentType("application/json");
             List<salle> userList = salleServices.findAll();
             Gson json = new Gson();
             response.getWriter().write(json.toJson(userList));
+        
         }
+        
     }
 
 }

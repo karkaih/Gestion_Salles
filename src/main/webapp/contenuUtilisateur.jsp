@@ -30,13 +30,23 @@
                                     
                                     <div class="col-md-6 col-12">
                                         <div class="form-group">
-                                            <label for="city-column">Level</label>
-                                            <input type="text" id="level" class="form-control" placeholder="Level"
-                                                name="city-column">
+                                        <label for="city-column">Level</label>
+                                        
+                                        <select class="form-control" name="pets" id="level">
+                                              <option value="Admin">Admin</option>
+   											  <option value="Client">Client</option>
+  
+                                         </select>
+                                        
+                                            
+                                           
                                         </div>
                                     </div>
+                                    
                                     <div class="col-md-6 col-12">
                                         <div class="form-group">
+                                        
+                                        
                                             <label for="country-floating">FullName</label>
                                             <input type="text" id="fullName" class="form-control"
                                                 name="country-floating" placeholder="FullName">
