@@ -1,5 +1,6 @@
 package controller;
 
+import beans.salle;
 import beans.user;
 import com.google.gson.Gson;
 import com.mysql.cj.x.protobuf.MysqlxNotice.Warning.Level;
@@ -40,7 +41,7 @@ public class UserController extends HttpServlet {
         	
         	
             if (request.getParameter("op").equals("createAccount")) {
-            	
+            	Boolean sBoolean=false;
                 response.setContentType("application/json");
                 String email = request.getParameter("email");
                 String username = request.getParameter("username");
@@ -54,16 +55,36 @@ public class UserController extends HttpServlet {
                 
                 user u = new user(fullName,username,password,email,city,state,level);
                 
-                boolean v=userService.create(u);
 
                   
                 response.setContentType("application/json");
                 
-                List<user> userList1 = userService.findAll2();
-                  
-                response.getWriter().write(json.toJson(userList1));
+              
+                
+                List<user> userList = userService.findAll();
+                
+             //   response.getWriter().write(json.toJson(userList1));
                 	 
- 
+                for(user s : userList) {
+               	 if(s.getUsername().equals(username)) {
+               		sBoolean = true ;
+               	 }
+                }
+                
+               if(sBoolean) {
+            	   
+               	System.out.println("Hada deja kayn");
+               	
+               	response.getWriter().write(json.toJson(true));
+               	
+               }
+               else {
+            	   
+               	System.out.println("nadi makaynch");
+               	userService.create(u);
+                List<user> userList1 = userService.findAll2();
+               	response.getWriter().write(json.toJson(userList1));
+               }
                 
                 
             }else if (request.getParameter("op").equals("delete")) {
@@ -71,7 +92,7 @@ public class UserController extends HttpServlet {
                 int id = Integer.parseInt(request.getParameter("id"));
                 userService.delete(id);
                 response.setContentType("application/json");
-                List<user> userList = userService.findAll();
+                List<user> userList = userService.findAll2();
                 Gson json = new Gson();
                 response.getWriter().write(json.toJson(userList));
                 
@@ -99,7 +120,7 @@ public class UserController extends HttpServlet {
                 m.setLevel(level);
                 userService.update(m);
                 response.setContentType("application/json");
-                List<user> userList = userService.findAll();
+                List<user> userList = userService.findAll2();
                 Gson json = new Gson();
                 response.getWriter().write(json.toJson(userList));
 

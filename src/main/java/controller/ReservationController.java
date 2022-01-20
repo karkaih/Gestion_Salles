@@ -59,13 +59,24 @@ public class ReservationController extends HttpServlet {
 
                 Date startDate = new Date(request.getParameter("startDate").replace("-", "/")) ;
                 Date endDate = new Date (request.getParameter("endDate").replace("-", "/"));
+                System.out.println(startDate);
                 
-                reservationService.create(new reservation(note,type,salle, UserController.currentUser.getId(), startDate,endDate));
                 
-                response.setContentType("application/json");
-                List<reservation> userList = reservationService.findAll();
-                Gson json = new Gson();
-                response.getWriter().write(json.toJson(userList));
+                if(startDate.compareTo(endDate) <0) {
+                	reservationService.create(new reservation(note,type,salle, UserController.currentUser.getId(), startDate,endDate));
+                    
+                    response.setContentType("application/json");
+                    List<reservation> userList = reservationService.findAll();
+                    Gson json = new Gson();
+                    response.getWriter().write(json.toJson(userList));
+                }
+                else {
+                	response.setContentType("application/json");
+                	
+                	 Gson json = new Gson();
+                     response.getWriter().write(json.toJson(true));
+                }
+                
                 
             }else if (request.getParameter("op").equals("update")) {
             	salleServices salleService = new salleServices();

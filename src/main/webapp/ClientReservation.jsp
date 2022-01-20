@@ -40,14 +40,14 @@
                                         <div class="form-group">
                                             <label id="labeldebut" for="email-id-column">Date Debut</label>
                                             <input type="Date" id="dateDebut" class="form-control"
-                                                name="email-id-column" placeholder="Date Debut" value="2018-01-23">
+                                                name="email-id-column" placeholder="Date Debut" >
                                         </div>
                                     </div>
                                     <div class="col-md-6 col-12">
                                         <div class="form-group">
                                             <label id="labelfin" for="email-id-column">Date Fin</label>
                                             <input type="Date" id="dateFin" class="form-control"
-                                                name="email-id-column" placeholder="Date Fin" value="2018-01-23">
+                                                name="email-id-column" placeholder="Date Fin" >
                                         </div>
                                     </div>
                                 

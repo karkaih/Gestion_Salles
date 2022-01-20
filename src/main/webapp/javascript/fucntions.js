@@ -1,5 +1,28 @@
 
 $(document).ready(function(){
+	
+	//Date 
+	
+	
+var date = new Date();
+
+var day = date.getDate();
+var month = date.getMonth() + 1;
+var year = date.getFullYear();
+
+if (month < 10) month = "0" + month;
+if (day < 10) day = "0" + day;
+
+var today = year + "-" + month + "-" + day ;   
+    
+//document.getElementById("dateDebut").value = today;
+	 $('#dateDebut').val(today);
+	  $('#dateFin').val(today);
+	
+	
+	
+	
+	
   //ComboBox
   $.ajax({
     url: 'http://localhost:8081/Reserv_salles/SalleController',
@@ -64,7 +87,7 @@ function Affichagecombo(data){
             
             success: function (data) {
 	
-                if(data.length>0)  
+                if(data.length>=0)  
                 
                 {
 	             console.log(id);
@@ -160,6 +183,7 @@ function Affichagecombo(data){
             
         });
     });
+    
 //Create and update +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     
       $('#createUser').click(function () {
@@ -181,8 +205,24 @@ function Affichagecombo(data){
             data: {op: "createAccount",username: username, password: password ,fullname: fullName , email:email ,level:level , state:state ,city:city },
             
             success: function (data) {
-	            $('#UserTable').empty();
+	
+	if(data!==true){
+		
+	 $('#UserTable').empty();
                  Affichage(data);
+	
+		
+		
+	}
+	
+	else
+	
+	{
+			alert("username lready exist");
+	           
+                 
+	}
+	
              
             },
             
@@ -223,7 +263,16 @@ if( $("#createUser").html()==="Update"){
 
     });
     
-    
+     $.ajax({
+    url: 'http://localhost:8081/Reserv_salles/UserController',
+    dataType: 'json',
+    success: Affichage,
+    error: function(jqXHR, textStatus, errorThrown)
+    {
+     //   alert('Error: tsat tsat ' + textStatus + ' - ' + errorThrown);
+    }
+});
+
      
 
  //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -279,16 +328,7 @@ if( $("#createUser").html()==="Update"){
   
 
 
- $.ajax({
-    url: 'http://localhost:8081/Reserv_salles/UserController',
-    dataType: 'json',
-    success: Affichage,
-    error: function(jqXHR, textStatus, errorThrown)
-    {
-     //   alert('Error: tsat tsat ' + textStatus + ' - ' + errorThrown);
-    }
-});
-
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 
 
@@ -347,7 +387,7 @@ if( $("#createUser").html()==="Update"){
             
             success: function (data) {
 	
-                if(data.length>0)  
+                if(data.length>=0)  
                 
                 {
 	             console.log(id);
@@ -381,7 +421,7 @@ if( $("#createUser").html()==="Update"){
 	      
 	    $("#createSalle").html("Update Salle");
 	    
-
+ $('#name').attr("disabled",true);
              $('#idSalle').val($(this).parents().eq(1).children("td").eq(0).html()) ;
         var name = $('#name').val($(this).parents().eq(1).children("td").eq(1).html());
         var capacity = $('#capacity').val($(this).parents().eq(1).children("td").eq(2).html());
@@ -414,9 +454,14 @@ if( $("#createUser").html()==="Update"){
             data: {op: "add" , name: name, capacity: capacity ,type: type  },
             
             success: function (data) {
-	
-	             $('#SalleTable').empty();
-                 AffichageSalles(data);
+	if(data===true){
+		alert("name already esxist");
+	}
+	else{
+	$('#SalleTable').empty();
+                 AffichageSalles(data);	
+	}
+	             
 
                            },
             
@@ -445,14 +490,14 @@ if($("#createSalle").html()==="Update Salle"){
             success: function (data) 
             
             {
-	 console.log("working");
+	           console.log("working");
              
 	             $('#SalleTable').empty();
 	             
                  AffichageSalles(data);
                  
                  $("#createSalle").html("Create Salle");
-                
+                 $('#name').attr("disabled",true);
                            },
                            
             
@@ -542,7 +587,7 @@ if($("#createSalle").html()==="Update Salle"){
             
             success: function (data) {
 	
-                if(data.length>0)  
+                if(data.length>=0)  
                 
                 {
 	             console.log(id);
@@ -625,9 +670,14 @@ if($("#createSalle").html()==="Update Salle"){
             data: {op: "add" , note :Note , type : Type ,salle : combosalle ==null ? " " : combosalle , startDate: startDate , endDate: endDate },
             
             success: function (data) {
-	
-	             $('#ReservationTable').empty();
+	if(data!==true){
+		 $('#ReservationTable').empty();
                  AffichageReservation(data);
+	}
+	else{
+		alert("Date de debut superieur a Date de fin");
+	}
+	            
 
                            },
             
@@ -877,6 +927,7 @@ var options6 = {
             console.log(textStatus);
         }
     });
+
 
     var chart6 = new ApexCharts(document.querySelector("#chart6"),  options6);
     chart6.render();
